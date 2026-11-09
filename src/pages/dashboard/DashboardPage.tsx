@@ -23,7 +23,7 @@ const DashboardPage = () => {
 					<CardHeader>
 						<CardLabel icon='Dashboard' iconColor='primary'>
 							<CardTitle tag='h4'>
-								Welcome{user?.name ? `, ${user.name}` : ''}
+								Welcome{user?.full_name ? `, ${user.full_name}` : ''}
 							</CardTitle>
 						</CardLabel>
 					</CardHeader>

@@ -15,7 +15,7 @@ const HeaderUserProfile: FC = () => {
 	const [avatarFailed, setAvatarFailed] = useState(false);
 
 	const fullName =
-		`${userData?.name || ''} ${userData?.surname || ''}`.trim() || user?.name || 'User';
+		`${userData?.name || ''} ${userData?.surname || ''}`.trim() || user?.full_name || 'User';
 	const role = user?.role || userData?.position || '';
 	const email = user?.email || userData?.email || '';
 	const avatarSrc = userData?.src || '';

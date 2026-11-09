@@ -17,11 +17,10 @@ const isDemoAuth = (): boolean => AUTH_MODE === 'demo';
 
 const demoUser = (): LoginResponse => ({
 	id: 1,
-	name: 'Demo Administrator',
+	full_name: 'Demo Administrator',
 	email: DEMO_EMAIL,
 	role: 'Super Admin',
-	roles: ['super_admin'],
-	status: 'active',
+	roles: [{ id: 1, name: 'super_admin' }],
 	permissions: [],
 	unrestricted_access: true,
 	token: 'demo-token',

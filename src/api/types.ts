@@ -37,17 +37,26 @@ export class ApiError extends Error {
 	}
 }
 
+/** Compact related record / dropdown option: { id, code, name }. */
+export interface Reference {
+	id: number;
+	code: string;
+	name: string;
+}
+
 export interface AuthUser {
 	id: number;
-	name: string;
-	first_name?: string;
-	last_name?: string;
+	employee_code?: string | null;
+	full_name: string;
+	username?: string | null;
 	email: string;
 	phone?: string | null;
 	avatar_url?: string | null;
-	role?: string;
-	roles?: string[];
-	status?: string;
+	designation?: Reference | null;
+	primary_branch?: Reference | null;
+	branches?: Reference[];
+	role?: string | null;
+	roles?: { id: number; name: string }[];
 	permissions?: string[];
 	unrestricted_access?: boolean;
 	last_login_at?: string | null;

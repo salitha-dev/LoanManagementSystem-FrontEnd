@@ -32,7 +32,71 @@ export const authPagesMenu = {
 
 export const appMenu: Record<string, AppMenuItem> = {
 	dashboard: { id: 'dashboard', text: 'Dashboard', path: 'dashboard', icon: 'Dashboard' },
-	// Stage 02+: loan modules are added here.
+	admin: {
+		id: 'admin',
+		text: 'Admin Management',
+		path: 'admin',
+		icon: 'AdminPanelSettings',
+		subMenu: {
+			provinces: {
+				id: 'provinces',
+				text: 'Province',
+				path: 'admin/provinces',
+				icon: 'Public',
+				permissions: ['province.view'],
+			},
+			districts: {
+				id: 'districts',
+				text: 'District',
+				path: 'admin/districts',
+				icon: 'Map',
+				permissions: ['district.view'],
+			},
+			dsds: {
+				id: 'dsds',
+				text: 'DSD',
+				path: 'admin/dsds',
+				icon: 'AccountTree',
+				permissions: ['dsd.view'],
+			},
+			gnds: {
+				id: 'gnds',
+				text: 'GND',
+				path: 'admin/gnds',
+				icon: 'Place',
+				permissions: ['gnd.view'],
+			},
+			branches: {
+				id: 'branches',
+				text: 'Branches',
+				path: 'admin/branches',
+				icon: 'Apartment',
+				permissions: ['branch.view'],
+			},
+			roles: {
+				id: 'roles',
+				text: 'Roles & Permissions',
+				path: 'admin/roles',
+				icon: 'Security',
+				permissions: ['role.view'],
+			},
+			designations: {
+				id: 'designations',
+				text: 'Designations',
+				path: 'admin/designations',
+				icon: 'Badge',
+				permissions: ['designation.view'],
+			},
+			users: {
+				id: 'users',
+				text: 'Users',
+				path: 'admin/users',
+				icon: 'People',
+				permissions: ['user.view'],
+			},
+		},
+	},
+	// Financing modules are added below in later phases.
 };
 
 const userHasMenuAccess = (item: AppMenuItem, user: MenuUser): boolean =>

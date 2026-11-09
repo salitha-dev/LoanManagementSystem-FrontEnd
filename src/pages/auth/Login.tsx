@@ -37,7 +37,7 @@ const Login: FC = () => {
 			setIsLoading(true);
 			try {
 				const user = await login(values.login.trim(), values.password);
-				showAppSuccess('Signed in successfully', `Welcome back, ${user.name}.`);
+				showAppSuccess('Signed in successfully', `Welcome back, ${user.full_name}.`);
 				navigate(`/${homePathForUser(user)}`);
 			} catch (error) {
 				const apiErrors = toFieldErrors(error);

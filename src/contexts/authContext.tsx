@@ -41,8 +41,9 @@ export interface IAuthContextProps {
 
 const toUserDisplay = (user: AuthUser | null): Partial<IUserDisplay> => {
 	if (!user) return {};
-	const first = user.first_name || user.name.trim().split(/\s+/)[0] || user.name;
-	const last = user.last_name || user.name.trim().split(/\s+/).slice(1).join(' ') || '';
+	const parts = (user.full_name || '').trim().split(/\s+/);
+	const first = parts[0] || user.full_name;
+	const last = parts.slice(1).join(' ');
 	const avatar = mediaUrl(user.avatar_url) || '';
 	return {
 		name: first,
