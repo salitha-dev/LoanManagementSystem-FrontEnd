@@ -1,0 +1,9 @@
+{
+	"short_name": "LMS",
+	"name": "Loan Management System",
+	"icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }],
+	"start_url": ".",
+	"display": "standalone",
+	"theme_color": "#0f766e",
+	"background_color": "#ffffff"
+}

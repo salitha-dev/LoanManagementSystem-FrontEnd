@@ -1,0 +1,127 @@
+//
+// Form Control
+//
+
+.form-control {
+	@include dark-mode {
+		background-color: $dark-input-bg;
+		color: $dark-input-color;
+
+		&:not([class*='valid']) {
+			border-color: $dark-input-border-color;
+		}
+	}
+
+	&:focus {
+		// @include box-shadow($box-shadow);
+	}
+
+	// Disabled and read-only inputs
+	//
+	// HTML5 says that controls under a fieldset > legend:first-child won't be
+	// disabled if the fieldset is disabled. Due to implementation difficulty, we
+	// don't honor that edge case; we style them as disabled anyway.
+	&:disabled,
+	&[readonly] {
+		@include dark-mode {
+			background-color: $dark-input-disabled-bg;
+		}
+	}
+}
+
+// Readonly controls as plain text
+//
+// Apply class to a readonly input to make it appear like regular plain
+// text (without any border, background color, focus indicator)
+
+.form-control-plaintext {
+	@include dark-mode {
+		color: $dark-input-plaintext-color;
+	}
+
+	&:focus {
+		outline: none;
+	}
+}
+
+.cp-password-field {
+	position: relative;
+}
+
+.cp-password-input {
+	padding-right: 2.85rem;
+}
+
+.form-floating:has(> .cp-password-toggle) {
+	position: relative;
+}
+
+.cp-password-toggle {
+	position: absolute;
+	z-index: 5;
+	top: 0;
+	right: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.65rem;
+	height: 100%;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--bs-secondary-color, #64748b);
+	line-height: 1;
+
+	&:hover:not(:disabled),
+	&:focus-visible {
+		color: var(--bs-primary, #0d3b66);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--bs-primary, #0d3b66);
+		outline-offset: -4px;
+		border-radius: 0.35rem;
+	}
+
+	&:disabled {
+		opacity: 0.45;
+		cursor: not-allowed;
+	}
+
+	svg {
+		width: 1.15rem;
+		height: 1.15rem;
+	}
+}
+
+.form-floating > .cp-password-toggle {
+	height: auto;
+	top: 1.15rem;
+}
+
+.form-floating > .cp-password-input {
+	padding-right: 2.85rem;
+}
+
+.form-control[type='file']::-webkit-file-upload-button {
+	@include dark-mode {
+		background-color: $dark-input-file-upload-button-bg;
+	}
+
+	background-color: $input-file-upload-button-bg;
+}
+
+@include dark-mode(true) {
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	textarea:-webkit-autofill,
+	textarea:-webkit-autofill:hover,
+	textarea:-webkit-autofill:focus,
+	select:-webkit-autofill,
+	select:-webkit-autofill:hover,
+	select:-webkit-autofill:focus {
+		box-shadow: 0 0 0 100rem $dark-input-autofill-bg inset;
+		-webkit-text-fill-color: $dark-input-autofill-color;
+	}
+}

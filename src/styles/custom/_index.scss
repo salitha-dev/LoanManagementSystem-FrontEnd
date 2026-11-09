@@ -1,0 +1,33 @@
+//
+// Custom
+//
+
+@use 'sass:map';
+
+.scroll-margin {
+	scroll-margin-top: map.get($header, height) + map.get($subheader, height) +
+		map.get($page, padding-y);
+}
+
+.sticky-top-size {
+	top: map.get($header, height) + map.get($subheader, height) + map.get($page, padding-y);
+}
+
+.border-transparent {
+	--#{$prefix}border-opacity: 0;
+}
+
+// Small gutter between the fixed sidebar and the main column
+$gps-aside-gap: 0.75rem;
+
+@include media-breakpoint-up(map.get($aside, mobile-breakpoint)) {
+	.aside ~ .wrapper {
+		padding-left: map.get($aside, width) + $gps-aside-gap;
+	}
+
+	.aside:not(.open) ~ .wrapper {
+		padding-left: map-deep-get($aside, minimize, width) + $gps-aside-gap;
+	}
+}
+
+@import 'theme-ui';
