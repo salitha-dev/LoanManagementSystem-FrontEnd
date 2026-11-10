@@ -22,6 +22,7 @@ const SubSectorsPage = lazy(() => import('../pages/facility/SubSectorsPage'));
 const SectorsPage = lazy(() => import('../pages/facility/SectorsPage'));
 const TitlesPage = lazy(() => import('../pages/facility/TitlesPage'));
 const RelationshipsPage = lazy(() => import('../pages/facility/RelationshipsPage'));
+const EducationPage = lazy(() => import('../pages/facility/EducationPage'));
 
 const admin = appMenu.admin.subMenu!;
 const facility = admin.facility.subMenu!;
@@ -50,6 +51,7 @@ const contents: RouteObject[] = [
 	guarded(facility.sectors.path, <SectorsPage />),
 	guarded(facility.titles.path, <TitlesPage />),
 	guarded(facility.relationships.path, <RelationshipsPage />),
+	guarded(facility.educations.path, <EducationPage />),
 ];
 
 export default contents;

@@ -43,6 +43,13 @@ export interface Relationship extends AuditFields {
 	relationship_name: string;
 }
 
+/** Education qualification; reusable in customer, guarantor and applicant forms. */
+export interface Education extends AuditFields {
+	id: number;
+	education_code: string;
+	education_name: string;
+}
+
 export type MainSectorPayload = Pick<
 	MainSector,
 	'main_sector_code' | 'main_sector_name' | 'description'
@@ -59,6 +66,7 @@ export type SectorPayload = Pick<
 	main_sector_id: number | null;
 };
 export type TitlePayload = Pick<Title, 'title_code' | 'title_name'>;
+export type EducationPayload = Pick<Education, 'education_code' | 'education_name'>;
 export type RelationshipPayload = Pick<Relationship, 'relationship_code' | 'relationship_name'>;
 
 export const mainSectorService = createResourceService<MainSector, MainSectorPayload>(
@@ -70,3 +78,4 @@ export const titleService = createResourceService<Title, TitlePayload>('/titles'
 export const relationshipService = createResourceService<Relationship, RelationshipPayload>(
 	'/relationships',
 );
+export const educationService = createResourceService<Education, EducationPayload>('/educations');

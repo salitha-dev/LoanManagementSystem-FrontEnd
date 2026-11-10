@@ -7,6 +7,7 @@ import TextField from '../../components/common/TextField';
 import PermissionMatrix from '../../components/common/PermissionMatrix';
 import Badge from '../../components/bootstrap/Badge';
 import Spinner from '../../components/bootstrap/Spinner';
+import Icon from '../../components/icon/Icon';
 import useServerList from '../../hooks/useServerList';
 import useCrudController from '../../hooks/useCrudController';
 import AuthContext from '../../contexts/authContext';
@@ -116,7 +117,7 @@ const RolesPage = () => {
 			/>
 			<FormModal
 				id='role-modal'
-				size='lg'
+				size='xl'
 				title={
 					{ create: 'Add role', edit: 'Edit role', view: crud.record?.name ?? 'Role' }[
 						crud.mode ?? 'view'
@@ -125,18 +126,40 @@ const RolesPage = () => {
 				isOpen={crud.mode !== null}
 				onClose={crud.close}
 				onSubmit={readOnly ? undefined : crud.save}
+				submitLabel={crud.mode === 'create' ? 'Create role' : 'Save changes'}
 				saving={form.saving}>
 				<div className='row g-3'>
-					{!readOnly && (
-						<TextField
-							id='role-name'
-							label='Role name'
-							required
-							className='col-12'
-							value={form.values.name}
-							onChange={(v) => form.setField('name', v)}
-							feedback={form.feedback('name')}
-						/>
+					{readOnly ? (
+						crud.record && (
+							<div className='col-12 d-flex flex-wrap gap-2 align-items-center'>
+								{crud.record.is_protected && (
+									<Badge color='warning' isLight>
+										Protected
+									</Badge>
+								)}
+								<Badge color='info' isLight>
+									{crud.record.users_count ?? 0} user(s)
+								</Badge>
+							</div>
+						)
+					) : (
+						<>
+							<TextField
+								id='role-name'
+								label='Role name'
+								required
+								className='col-md-6'
+								value={form.values.name}
+								onChange={(v) => form.setField('name', v)}
+								feedback={form.feedback('name')}
+							/>
+							<div className='col-md-6 d-flex align-items-end'>
+								<div className='form-text mb-2'>
+									A role is a set of system permissions. Assign it to users in
+									Admin › Users. (Organisational positions are Designations.)
+								</div>
+							</div>
+						</>
 					)}
 					<div className='col-12'>
 						<div className='fw-semibold mb-2'>Permissions</div>
@@ -161,7 +184,8 @@ const RolesPage = () => {
 						)}
 						{!readOnly && !unrestricted && (
 							<div className='form-text'>
-								You can only grant permissions that you hold yourself.
+								<Icon icon='Lock' size='sm' /> Locked permissions are ones you do
+								not hold; only a Super Admin can grant them.
 							</div>
 						)}
 					</div>

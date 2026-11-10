@@ -109,6 +109,8 @@ export interface PermissionCatalog {
 	groups: {
 		resource: string;
 		label: string;
+		/** Sidebar section, e.g. Admin Management / Facility Management. */
+		section: string;
 		permissions: { name: string; action: string }[];
 	}[];
 }

@@ -50,7 +50,8 @@ export type OptionType =
 	| 'sub-sectors'
 	| 'sectors'
 	| 'titles'
-	| 'relationships';
+	| 'relationships'
+	| 'educations';
 
 /** Dropdown data available to any signed-in user. Child types need their parent id. */
 export const fetchOptions = (type: OptionType, params: Record<string, number> = {}) =>

@@ -142,6 +142,13 @@ export const appMenu: Record<string, AppMenuItem> = {
 						icon: 'FamilyRestroom',
 						permissions: ['relationship.view'],
 					},
+					educations: {
+						id: 'educations',
+						text: 'Education',
+						path: 'facility/educations',
+						icon: 'School',
+						permissions: ['education.view'],
+					},
 				},
 			},
 		},
