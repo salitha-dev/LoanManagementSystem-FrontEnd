@@ -17,12 +17,19 @@ export function menuPathMatches(currentPath: string, itemPath?: string): boolean
 	return current === path || current.startsWith(`${path}/`);
 }
 
-export function collectDescendantIds(node: MenuNode | null | undefined): string[] {
-	if (!node?.subMenu) return [];
-	return Object.values(node.subMenu).flatMap((child) => [
-		String(child.id),
-		...collectDescendantIds(child),
-	]);
+/** Maps every menu item id to the ids of the groups that contain it, outermost first. */
+export function buildAncestorMap(menu: Record<string, MenuNode>): Record<string, string[]> {
+	const map: Record<string, string[]> = {};
+	const visit = (nodes: Record<string, MenuNode> | null | undefined, chain: string[]) => {
+		if (!nodes) return;
+		Object.values(nodes).forEach((node) => {
+			if (!node?.id) return;
+			map[String(node.id)] = chain;
+			if (node.subMenu) visit(node.subMenu, [...chain, String(node.id)]);
+		});
+	};
+	visit(menu, []);
+	return map;
 }
 
 export function findOpenSectionIds(menu: Record<string, MenuNode>, pathname: string): string[] {

@@ -6,6 +6,7 @@ import RowActions from '../../components/common/RowActions';
 import DetailList, { auditDetails } from '../../components/common/DetailList';
 import TextField from '../../components/common/TextField';
 import GeoSelect, { EMPTY_GEO, GeoValue } from '../../components/common/GeoSelect';
+import LocationPicker from '../../components/common/LocationPicker';
 import useServerList from '../../hooks/useServerList';
 import useCrudController from '../../hooks/useCrudController';
 import { formatDate } from '../../helpers/datetime';
@@ -18,6 +19,8 @@ type Form = GeoValue & {
 	contact_number: string;
 	email: string;
 	opening_date: string;
+	latitude: number | null;
+	longitude: number | null;
 };
 const EMPTY: Form = {
 	...EMPTY_GEO,
@@ -27,6 +30,8 @@ const EMPTY: Form = {
 	contact_number: '',
 	email: '',
 	opening_date: '',
+	latitude: null,
+	longitude: null,
 };
 const toForm = (r: Branch): Form => ({
 	province_id: r.province_id,
@@ -39,6 +44,8 @@ const toForm = (r: Branch): Form => ({
 	contact_number: r.contact_number ?? '',
 	email: r.email ?? '',
 	opening_date: r.opening_date ?? '',
+	latitude: r.latitude,
+	longitude: r.longitude,
 });
 const toPayload = (f: Form): BranchPayload => ({
 	branch_code: f.branch_code,
@@ -51,6 +58,8 @@ const toPayload = (f: Form): BranchPayload => ({
 	contact_number: f.contact_number || null,
 	email: f.email || null,
 	opening_date: f.opening_date || null,
+	latitude: f.latitude,
+	longitude: f.longitude,
 });
 
 const BranchesPage = () => {
@@ -162,6 +171,18 @@ const BranchesPage = () => {
 								value: record.opening_date ? formatDate(record.opening_date) : null,
 							},
 							{ label: 'Assigned users', value: record.users_count ?? 0 },
+							{
+								label: 'Location',
+								value: (
+									<LocationPicker
+										idPrefix='branch-view'
+										latitude={record.latitude}
+										longitude={record.longitude}
+										readOnly
+										height={240}
+									/>
+								),
+							},
 							...auditDetails(record),
 						]}
 					/>
@@ -229,6 +250,19 @@ const BranchesPage = () => {
 							onChange={(v) => form.setField('email', v)}
 							feedback={form.feedback('email')}
 						/>
+						<div className='col-12'>
+							<div className='fw-semibold mb-2'>Branch location</div>
+							<LocationPicker
+								idPrefix='branch-form'
+								latitude={form.values.latitude}
+								longitude={form.values.longitude}
+								onChange={(latitude, longitude) =>
+									form.patch({ latitude, longitude })
+								}
+								latitudeFeedback={form.feedback('latitude')}
+								longitudeFeedback={form.feedback('longitude')}
+							/>
+						</div>
 					</div>
 				)}
 			</FormModal>

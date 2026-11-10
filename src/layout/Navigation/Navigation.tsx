@@ -5,6 +5,7 @@ import React, {
 	ReactNode,
 	useCallback,
 	useEffect,
+	useRef,
 	useState,
 } from 'react';
 import classNames from 'classnames';
@@ -13,7 +14,7 @@ import { useLocation } from 'react-router-dom';
 import { TIcons } from '../../type/icons-type';
 import Item from './Item';
 import List from './List';
-import { collectDescendantIds, findOpenSectionIds } from './menuActive';
+import { buildAncestorMap, findOpenSectionIds } from './menuActive';
 
 interface INavigationLineProps {
 	className?: string;
@@ -69,25 +70,39 @@ const Navigation = forwardRef<HTMLElement, INavigationProps>(
 
 		const { t } = useTranslation('menu');
 
+		// Accordion rule: only the groups on the path to the selected item are expanded.
+		// Every navigation (sidebar, link, back button) re-applies it for the current page,
+		// even when the page stays inside the same group.
 		useEffect(() => {
 			if (horizontal) return;
 			setOpenIds(routeOpenKey ? routeOpenKey.split('|') : []);
-		}, [horizontal, routeOpenKey]);
+		}, [horizontal, routeOpenKey, location.pathname]);
 
-		const onToggleSection = useCallback(
-			(sectionId: string, siblingIds: string[], descendantIds: string[]) => {
-				setOpenIds((current) => {
-					if (current.includes(sectionId)) {
-						return current.filter(
-							(itemId) => itemId !== sectionId && !descendantIds.includes(itemId),
-						);
-					}
-					const remove = new Set(siblingIds.filter((itemId) => itemId !== sectionId));
-					return [...current.filter((itemId) => !remove.has(itemId)), sectionId];
-				});
-			},
-			[],
-		);
+		// Kept in a ref (updated after render) so the click handlers stay stable for memoised items.
+		const ancestorsRef = useRef<Record<string, string[]>>({});
+		useEffect(() => {
+			ancestorsRef.current = buildAncestorMap(menu);
+		}, [menu]);
+
+		/**
+		 * Opening a group collapses everything outside its path. Clicking an open group that has
+		 * an open sub-group steps back to it (sub-group closes, its links show again); otherwise
+		 * the group closes, keeping only its parents.
+		 */
+		const onToggleSection = useCallback((sectionId: string) => {
+			const ancestors = ancestorsRef.current;
+			const chain = ancestors[sectionId] ?? [];
+			setOpenIds((current) => {
+				if (!current.includes(sectionId)) return [...chain, sectionId];
+				const hasOpenSubGroup = current.some((id) => ancestors[id]?.includes(sectionId));
+				return hasOpenSubGroup ? [...chain, sectionId] : chain;
+			});
+		}, []);
+
+		/** Choosing a page collapses every group that does not contain it. */
+		const onSelectLeaf = useCallback((itemId: string) => {
+			setOpenIds(ancestorsRef.current[itemId] ?? []);
+		}, []);
 
 		function fillMenu(
 			data:
@@ -117,12 +132,15 @@ const Navigation = forwardRef<HTMLElement, INavigationProps>(
 				.map((key) => data[key])
 				.filter((item) => item?.path);
 			const siblingPaths = entries.map((item) => String(item.path));
-			const siblingCloseIds = entries
-				.filter((item) => item.subMenu)
-				.flatMap((item) => [String(item.id), ...collectDescendantIds(item)]);
+			// Drill-in: inside a group, an open sub-group replaces its sibling links
+			// (e.g. Admin › Facility Management shows only the Facility links).
+			const isNested = parentId !== rootId && !isHorizontal;
+			const openSubGroup = isNested
+				? entries.find((entry) => entry.subMenu && openIds.includes(String(entry.id)))
+				: undefined;
 
 			return Object.keys(data).map((item) =>
-				data[item].path ? (
+				openSubGroup && data[item] !== openSubGroup ? null : data[item].path ? (
 					<Item
 						key={data[item].id}
 						rootId={rootId}
@@ -135,10 +153,9 @@ const Navigation = forwardRef<HTMLElement, INavigationProps>(
 						setActiveItem={setActiveItem}
 						activeItem={activeItem}
 						openIds={openIds}
-						siblingIds={siblingCloseIds}
-						descendantIds={collectDescendantIds(data[item])}
 						siblingPaths={siblingPaths}
 						onToggleSection={onToggleSection}
+						onSelectLeaf={onSelectLeaf}
 						notification={data[item].notification}
 						hide={data[item].hide}>
 						{!!data[item].subMenu &&

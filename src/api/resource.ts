@@ -39,7 +39,18 @@ export type ResourceService<T, TPayload = Partial<T>> = ReturnType<
 >;
 
 export type OptionType =
-	'provinces' | 'districts' | 'dsds' | 'gnds' | 'branches' | 'designations' | 'roles';
+	| 'provinces'
+	| 'districts'
+	| 'dsds'
+	| 'gnds'
+	| 'branches'
+	| 'designations'
+	| 'roles'
+	| 'main-sectors'
+	| 'sub-sectors'
+	| 'sectors'
+	| 'titles'
+	| 'relationships';
 
 /** Dropdown data available to any signed-in user. Child types need their parent id. */
 export const fetchOptions = (type: OptionType, params: Record<string, number> = {}) =>

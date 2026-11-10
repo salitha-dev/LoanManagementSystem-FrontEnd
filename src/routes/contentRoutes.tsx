@@ -15,8 +15,16 @@ const BranchesPage = lazy(() => import('../pages/admin/BranchesPage'));
 const RolesPage = lazy(() => import('../pages/admin/RolesPage'));
 const DesignationsPage = lazy(() => import('../pages/admin/DesignationsPage'));
 const UsersPage = lazy(() => import('../pages/admin/UsersPage'));
+const ActivityLogsPage = lazy(() => import('../pages/admin/ActivityLogsPage'));
+
+const MainSectorsPage = lazy(() => import('../pages/facility/MainSectorsPage'));
+const SubSectorsPage = lazy(() => import('../pages/facility/SubSectorsPage'));
+const SectorsPage = lazy(() => import('../pages/facility/SectorsPage'));
+const TitlesPage = lazy(() => import('../pages/facility/TitlesPage'));
+const RelationshipsPage = lazy(() => import('../pages/facility/RelationshipsPage'));
 
 const admin = appMenu.admin.subMenu!;
+const facility = admin.facility.subMenu!;
 
 const guarded = (path: string, element: React.ReactNode): RouteObject => ({
 	path,
@@ -36,6 +44,12 @@ const contents: RouteObject[] = [
 	guarded(admin.roles.path, <RolesPage />),
 	guarded(admin.designations.path, <DesignationsPage />),
 	guarded(admin.users.path, <UsersPage />),
+	guarded(admin.activityLogs.path, <ActivityLogsPage />),
+	guarded(facility.mainSectors.path, <MainSectorsPage />),
+	guarded(facility.subSectors.path, <SubSectorsPage />),
+	guarded(facility.sectors.path, <SectorsPage />),
+	guarded(facility.titles.path, <TitlesPage />),
+	guarded(facility.relationships.path, <RelationshipsPage />),
 ];
 
 export default contents;

@@ -59,6 +59,8 @@ export interface Branch extends AuditFields {
 	district?: Reference | null;
 	dsd?: Reference | null;
 	gnd?: Reference | null;
+	latitude: number | null;
+	longitude: number | null;
 	contact_number: string | null;
 	email: string | null;
 	opening_date: string | null;

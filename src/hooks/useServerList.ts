@@ -14,9 +14,14 @@ type Loader<T> = (params: ListParams) => Promise<PaginatedResponse<T>>;
  */
 export default function useServerList<T>(
 	load: Loader<T>,
-	options: { defaultSort: string; filters?: ListParams; entity: string },
+	options: {
+		defaultSort: string;
+		defaultDirection?: SortDirection;
+		filters?: ListParams;
+		entity: string;
+	},
 ) {
-	const { defaultSort, filters = {}, entity } = options;
+	const { defaultSort, defaultDirection = 'asc', filters = {}, entity } = options;
 	const filtersKey = JSON.stringify(filters);
 
 	const [page, setPage] = useState(1);
@@ -24,7 +29,7 @@ export default function useServerList<T>(
 	const [search, setSearch] = useState('');
 	const [sort, setSort] = useState<{ id: string; direction: SortDirection }>({
 		id: defaultSort,
-		direction: 'asc',
+		direction: defaultDirection,
 	});
 	const [rows, setRows] = useState<T[]>([]);
 	const [total, setTotal] = useState(0);

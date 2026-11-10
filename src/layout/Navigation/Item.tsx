@@ -30,10 +30,11 @@ interface IItemProps {
 	activeItem?: string;
 	setActiveItem?(...args: unknown[]): unknown;
 	openIds?: string[];
-	siblingIds?: string[];
-	descendantIds?: string[];
 	siblingPaths?: string[];
-	onToggleSection?(id: string, siblingIds: string[], descendantIds: string[]): void;
+	/** Expand/collapse a group (accordion: other branches collapse). */
+	onToggleSection?(id: string): void;
+	/** A page link was chosen: collapse groups that do not contain it. */
+	onSelectLeaf?(id: string): void;
 }
 const Item: FC<IItemProps> = ({
 	children,
@@ -48,10 +49,9 @@ const Item: FC<IItemProps> = ({
 	isMore,
 	hide,
 	openIds,
-	siblingIds = [],
-	descendantIds = [],
 	siblingPaths = [],
 	onToggleSection,
+	onSelectLeaf,
 	...props
 }) => {
 	const { darkModeStatus } = useDarkMode();
@@ -63,6 +63,7 @@ const Item: FC<IItemProps> = ({
 	const isOpen = Boolean(id && openIds?.includes(id));
 
 	const linkHandleClick = () => {
+		if (id) onSelectLeaf?.(id);
 		// For Mobile Design — close the drawer only after choosing a page, not when expanding a section
 		if (width < (Number(import.meta.env.VITE_MOBILE_BREAKPOINT_SIZE) || 768))
 			setAsideStatus(false);
@@ -243,7 +244,7 @@ const Item: FC<IItemProps> = ({
 		const parentTo = typeof to === 'string' && to.startsWith('/') ? to : `/${to || ''}`;
 		const toggleSection = () => {
 			if (id && onToggleSection) {
-				onToggleSection(id, siblingIds, descendantIds);
+				onToggleSection(id);
 			} else if (typeof props.setActiveItem !== 'undefined') {
 				props.setActiveItem(ACTIVE ? undefined : id);
 			}
