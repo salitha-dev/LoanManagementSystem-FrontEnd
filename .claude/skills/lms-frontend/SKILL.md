@@ -46,6 +46,6 @@ description: >-
 
 ## Conventions
 
-- Money from the API is integer cents: format for display only, send cents back.
+- Money from the API is a decimal string (`"150000.50"`): keep it a string, format for display only (`formatMoney` in `api/finance.service.ts`), send the string back; never do float arithmetic on amounts.
 - Auth modes: `VITE_AUTH_MODE=api` (real) or `demo` (offline UI work only: `admin@lms.local` / `password`).
 - Keep inherited theme files as they are unless the task targets them; Prettier/ESLint baseline is clean, keep it that way.
