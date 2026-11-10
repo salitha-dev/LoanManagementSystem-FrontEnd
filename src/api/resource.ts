@@ -51,7 +51,10 @@ export type OptionType =
 	| 'sectors'
 	| 'titles'
 	| 'relationships'
-	| 'educations';
+	| 'educations'
+	| 'banks'
+	| 'bank-branches'
+	| 'bank-accounts';
 
 /** Dropdown data available to any signed-in user. Child types need their parent id. */
 export const fetchOptions = (type: OptionType, params: Record<string, number> = {}) =>

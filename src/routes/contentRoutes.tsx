@@ -23,9 +23,15 @@ const SectorsPage = lazy(() => import('../pages/facility/SectorsPage'));
 const TitlesPage = lazy(() => import('../pages/facility/TitlesPage'));
 const RelationshipsPage = lazy(() => import('../pages/facility/RelationshipsPage'));
 const EducationPage = lazy(() => import('../pages/facility/EducationPage'));
+const BanksPage = lazy(() => import('../pages/finance/BanksPage'));
+const BankBranchesPage = lazy(() => import('../pages/finance/BankBranchesPage'));
+const BankAccountsPage = lazy(() => import('../pages/finance/BankAccountsPage'));
+const ChequeBooksPage = lazy(() => import('../pages/finance/ChequeBooksPage'));
+const ChequeReactivePage = lazy(() => import('../pages/finance/ChequeReactivePage'));
 
 const admin = appMenu.admin.subMenu!;
 const facility = admin.facility.subMenu!;
+const finance = admin.finance.subMenu!;
 
 const guarded = (path: string, element: React.ReactNode): RouteObject => ({
 	path,
@@ -52,6 +58,11 @@ const contents: RouteObject[] = [
 	guarded(facility.titles.path, <TitlesPage />),
 	guarded(facility.relationships.path, <RelationshipsPage />),
 	guarded(facility.educations.path, <EducationPage />),
+	guarded(finance.banks.path, <BanksPage />),
+	guarded(finance.bankBranches.path, <BankBranchesPage />),
+	guarded(finance.bankAccounts.path, <BankAccountsPage />),
+	guarded(finance.chequeBooks.path, <ChequeBooksPage />),
+	guarded(finance.chequeReactive.path, <ChequeReactivePage />),
 ];
 
 export default contents;

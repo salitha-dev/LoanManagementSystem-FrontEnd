@@ -21,6 +21,8 @@ const ACTION_LABELS: Record<string, string> = {
 	create: 'Create',
 	update: 'Update',
 	delete: 'Delete',
+	approve: 'Approve',
+	reject: 'Reject',
 };
 const actionLabel = (action: string) => ACTION_LABELS[action] ?? action;
 
